@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Compétences Cristal - Quentin</title>
+  <style>
+    body {
+      background: radial-gradient(circle at 30% 40%, #2e1756 0%, #0c0521 100%);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    h1 {
+      text-align: center;
+      margin: 2rem 0 2.5rem 0;
+      font-size: 2.1rem;
+      color: #d359ff;
+      text-shadow: 0 0 16px #a259ff44;
+    }
+    .cards-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+    .crystal-card {
+      width: 320px;
+      height: 420px;
+      border-radius: 22px;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--card1) 60%, var(--card2) 100%);
+      box-shadow: 0 0 48px var(--card-glow), 0 2px 32px #000b;
+      border: 2.5px solid var(--card-glow);
+      transition: box-shadow 0.2s, transform 0.25s;
+    }
+    .crystal-card:hover {
+      box-shadow: 0 0 80px var(--card-glow), 0 2px 32px #000b;
+      transform: translateY(-6px) scale(1.04);
+    }
+    .crystal-card .card-glow-border {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 22px;
+      pointer-events: none;
+      z-index: 1;
+      border: 2.5px solid var(--card-glow);
+      box-shadow: 0 0 24px var(--card-glow), 0 0 120px var(--card-glow);
+      opacity: 0.85;
+    }
+    .crystal-img {
+      width: 130px;
+      margin: 0 auto 1.5rem auto;
+      filter: drop-shadow(0 0 24px var(--card-glow));
+      user-select: none;
+      pointer-events: none;
+      display: block;
+      transition: filter 0.2s;
+      z-index: 2;
+    }
+    .crystal-card .card-title {
+      font-size: 1.23rem;
+      color: var(--card-glow);
+      letter-spacing: 1px;
+      text-align: center;
+      margin-bottom: 0.6rem;
+      text-shadow: 0 0 8px var(--card-glow);
+      z-index: 2;
+    }
+    .crystal-card .card-desc {
+      color: #bdbdbd;
+      font-size: 1rem;
+      text-align: center;
+      margin-bottom: 1.2rem;
+      padding: 0 1.2rem;
+      z-index: 2;
+    }
+    .crystal-card .card-footer {
+      color: #bdbdbd;
+      font-size: 0.95rem;
+      text-align: center;
+      margin-bottom: 1.1rem;
+      font-style: italic;
+      z-index: 2;
+    }
+    /* MODAL */
+    .modal-bg {
+      position: fixed;
+      z-index: 1000;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(18,6,38,0.93);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s;
+    }
+    .modal-content {
+      background: linear-gradient(135deg, #2a174a 60%, #3e1c5e 100%);
+      border-radius: 30px;
+      border: 2.5px solid #d359ff88;
+      box-shadow: 0 0 64px #d359ff44, 0 2px 32px #000b;
+      padding: 2.5rem 2.2rem 2rem 2.2rem;
+      min-width: 340px;
+      max-width: 97vw;
+      min-height: 340px;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      color: #fff;
+      animation: popModal 0.4s cubic-bezier(.4,2,.6,1);
+      overflow-y: auto;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes popModal { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal-title {
+      font-size: 1.7rem;
+      color: #d359ff;
+      margin-bottom: 1.2rem;
+      text-shadow: 0 0 12px #d359ff88;
+      text-align: center;
+    }
+    .modal-desc {
+      color: #bdbdbd;
+      font-size: 1.1rem;
+      margin-bottom: 2.2rem;
+      text-align: center;
+      max-width: 400px;
+    }
+    .modal-circles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.2rem;
+      justify-content: center;
+      align-items: flex-start;
+      margin-bottom: 1.2rem;
+    }
+    .circle-skill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 125px;
+      margin-bottom: 0.5rem;
+    }
+    .circle-wrap {
+      width: 110px;
+      height: 110px;
+      margin-bottom: 0.6rem;
+      position: relative;
+    }
+    .circle-bg, .circle-prog {
+      position: absolute; top: 0; left: 0;
+    }
+    .circle-bg {
+      stroke: #2b1853;
+      stroke-width: 12;
+    }
+    .circle-prog {
+      stroke: #d359ff;
+      stroke-width: 12;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 1.2s cubic-bezier(.4,2,.6,1);
+      filter: drop-shadow(0 0 8px #d359ff88);
+    }
+    .circle-text {
+      position: absolute;
+      left: 0; right: 0; top: 0; bottom: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 0 8px #a259ff88;
+      letter-spacing: 1px;
+    }
+    .skill-label {
+      font-size: 1.04rem;
+      color: #fff;
+      text-align: center;
+      margin-top: 0.2rem;
+      text-shadow: 0 0 4px #a259ff66;
+    }
+    .close-btn {
+      position: absolute;
+      top: 18px; right: 22px;
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 2.1rem;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      z-index: 2;
+    }
+    .close-btn:hover { opacity: 1; }
+    @media (max-width: 900px) {
+      .cards-row { gap: 1.5rem; }
+      .crystal-card { width: 220px; height: 320px; }
+      .modal-content { padding: 1.2rem 0.8rem 1.2rem 0.8rem; }
+      .modal-circles { gap: 1.3rem; }
+      .circle-skill { width: 100px; }
+      .circle-wrap { width: 90px; height: 90px; }
+    }
+    @media (max-width: 650px) {
+      .cards-row { flex-direction: column; align-items: center; }
+      .modal-circles { flex-direction: column; gap: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Mes compétences</h1>
+  <div class="cards-row">
+    <div class="crystal-card" style="--card1:#2b2eea;--card2:#5f3eea;--card-glow:#5e7fff;" onclick="openModal(0)">
+      <span class="card-glow-border"></span>
+      <img class="crystal-img" src="https://i.imgur.com/vB7qQ6P.png" alt="Crystal Web">
+      <div class="card-title">Développement Web</div>
+      <div class="card-desc">HTML, CSS, JavaScript, React, Node.js, API, VSCode, Git...</div>
+      <div class="card-footer">Catégorie : Web</div>
+    </div>
+    <div class="crystal-card" style="--card1:#d359ff;--card2:#ff6ec4;--card-glow:#ff6ec4;" onclick="openModal(1)">
+      <span class="card-glow-border"></span>
+      <img class="crystal-img" src="https://i.imgur.com/QnAULqQ.png" alt="Crystal Design">
+      <div class="card-title">Design Graphique</div>
+      <div class="card-desc">Photoshop, Illustrator, Figma, Canva, Inkscape, Gimp, XD, Sketch...</div>
+      <div class="card-footer">Catégorie : Créa</div>
+    </div>
+    <div class="crystal-card" style="--card1:#8f4fff;--card2:#4f3fff;--card-glow:#b86cff;" onclick="openModal(2)">
+      <span class="card-glow-border"></span>
+      <img class="crystal-img" src="https://i.imgur.com/vB7qQ6P.png" alt="Crystal 3D">
+      <div class="card-title">3D & Animation</div>
+      <div class="card-desc">Blender, Fusion 360, Cinema 4D, MotionBuilder, FreeCAD, Cura...</div>
+      <div class="card-footer">Catégorie : 3D</div>
+    </div>
+    <div class="crystal-card" style="--card1:#3fc1c9;--card2:#364f6b;--card-glow:#3fc1c9;" onclick="openModal(3)">
+      <span class="card-glow-border"></span>
+      <img class="crystal-img" src="https://i.imgur.com/QnAULqQ.png" alt="Crystal Bureautique">
+      <div class="card-title">Bureautique & Outils</div>
+      <div class="card-desc">Word, Excel, PowerPoint, LibreOffice, Trello, Teams, Google Drive...</div>
+      <div class="card-footer">Catégorie : Office</div>
+    </div>
+    <div class="crystal-card" style="--card1:#ffb347;--card2:#ffcc33;--card-glow:#ffb347;" onclick="openModal(4)">
+      <span class="card-glow-border"></span>
+      <img class="crystal-img" src="https://i.imgur.com/vB7qQ6P.png" alt="Crystal Soft Skills">
+      <div class="card-title">Soft Skills</div>
+      <div class="card-desc">Communication, Adaptabilité, Créativité, Gestion du temps...</div>
+      <div class="card-footer">Catégorie : Humain</div>
+    </div>
+    <div class="crystal-card" style="--card1:#ff5e62;--card2:#ff9966;--card-glow:#ff5e62;" onclick="openModal(5)">
+      <span class="card-glow-border"></span>
+      <img class="crystal-img" src="https://i.imgur.com/QnAULqQ.png" alt="Crystal Communication">
+      <div class="card-title">Communication & Réseaux</div>
+      <div class="card-desc">Discord, Skype, Telegram, Facebook, Instagram, LinkedIn...</div>
+      <div class="card-footer">Catégorie : Communication</div>
+    </div>
+    <div class="crystal-card" style="--card1:#00c3ff;--card2:#ffff1c;--card-glow:#00c3ff;" onclick="openModal(6)">
+      <span class="card-glow-border"></span>
+      <img class="crystal-img" src="https://i.imgur.com/vB7qQ6P.png" alt="Crystal Impression">
+      <div class="card-title">Impression & Prépresse</div>
+      <div class="card-desc">Sérigraphie, Impression grand format, Préparation fichiers, PAO...</div>
+      <div class="card-footer">Catégorie : Print</div>
+    </div>
+    <div class="crystal-card" style="--card1:#00b894;--card2:#00cec9;--card-glow:#00cec9;" onclick="openModal(7)">
+      <span class="card-glow-border"></span>
+      <img class="crystal-img" src="https://i.imgur.com/QnAULqQ.png" alt="Crystal Testeur JV">
+      <div class="card-title">Testeur Jeux Vidéo</div>
+      <div class="card-desc">Tests QA, rapports de bug, analyse gameplay, esprit critique...</div>
+      <div class="card-footer">Catégorie : QA / Gaming</div>
+    </div>
+    <div class="crystal-card" style="--card1:#fdcb6e;--card2:#e17055;--card-glow:#fdcb6e;" onclick="openModal(8)">
+      <span class="card-glow-border"></span>
+      <img class="crystal-img" src="https://i.imgur.com/vB7qQ6P.png" alt="Crystal Bac Pro">
+      <div class="card-title">Maintenance & Informatique</div>
+      <div class="card-desc">Réparation PC, conseil client, installation, optimisation...</div>
+      <div class="card-footer">Catégorie : IT</div>
+    </div>
+  </div>
+
+  <script>
+    const categories = [
+      {
+        title: "Développement Web",
+        desc: "Création de sites web modernes, interactifs et responsives avec les dernières technologies front-end.",
+        skills: [
+          { name: "HTML", percent: 95 },
+          { name: "CSS", percent: 92 },
+          { name: "JavaScript", percent: 90 },
+          { name: "React", percent: 80 },
+          { name: "Node.js", percent: 70 },
+          { name: "VSCode", percent: 90 },
+          { name: "Git", percent: 80 },
+          { name: "API REST", percent: 75 },
+          { name: "SASS/SCSS", percent: 85 },
+          { name: "Bootstrap", percent: 80 }
+        ]
+      },
+      {
+        title: "Design Graphique",
+        desc: "Création visuelle, identité graphique, UI/UX, et retouche photo pour des projets créatifs et professionnels.",
+        skills: [
+          { name: "Photoshop", percent: 90 },
+          { name: "Illustrator", percent: 85 },
+          { name: "InDesign", percent: 80 },
+          { name: "Premiere Pro", percent: 75 },
+          { name: "XD", percent: 70 },
+          { name: "Figma", percent: 80 },
+          { name: "Gimp", percent: 70 },
+          { name: "Canva", percent: 85 },
+          { name: "Inkscape", percent: 65 },
+          { name: "Sketch", percent: 60 }
+        ]
+      },
+      {
+        title: "3D & Animation",
+        desc: "Modélisation, rendu et animation 3D pour le web, le jeu vidéo, ou la création artistique.",
+        skills: [
+          { name: "Blender", percent: 80 },
+          { name: "Fusion 360", percent: 70 },
+          { name: "Cinema 4D", percent: 65 },
+          { name: "MotionBuilder", percent: 60 },
+          { name: "Simplify3D", percent: 60 },
+          { name: "Cura", percent: 65 },
+          { name: "FreeCAD", percent: 60 },
+          { name: "SolidWorks", percent: 55 },
+          { name: "AutoCAD", percent: 60 },
+          { name: "Three.js", percent: 75 }
+        ]
+      },
+      {
+        title: "Bureautique & Outils",
+        desc: "Maîtrise des outils bureautiques classiques et collaboratifs pour la gestion de documents, tableaux et présentations.",
+        skills: [
+          { name: "Word", percent: 90 },
+          { name: "LibreOffice", percent: 85 },
+          { name: "OpenOffice", percent: 80 },
+          { name: "PowerPoint", percent: 85 },
+          { name: "Slides", percent: 80 },
+          { name: "Excel", percent: 80 },
+          { name: "Sheet", percent: 75 },
+          { name: "Trello", percent: 80 },
+          { name: "Teams", percent: 75 },
+          { name: "Google Drive", percent: 80 }
+        ]
+      },
+      {
+        title: "Soft Skills",
+        desc: "Compétences humaines et comportementales essentielles pour travailler efficacement et s'adapter.",
+        skills: [
+          { name: "Sens de la communication", percent: 95 },
+          { name: "Adaptabilité", percent: 90 },
+          { name: "Gestion du stress", percent: 85 },
+          { name: "Travail en équipe", percent: 95 },
+          { name: "Analyse & esprit critique", percent: 90 },
+          { name: "Prise de décision", percent: 85 },
+          { name: "Proactivité", percent: 90 },
+          { name: "Gestion des priorités", percent: 85 },
+          { name: "Résilience", percent: 90 },
+          { name: "Créativité", percent: 95 },
+          { name: "Motivation", percent: 90 },
+          { name: "Curiosité & apprentissage", percent: 90 },
+          { name: "Sens du détail", percent: 90 },
+          { name: "Patience & persévérance", percent: 90 },
+          { name: "Sens esthétique", percent: 85 },
+          { name: "Polyvalence", percent: 90 }
+        ]
+      },
+      {
+        title: "Communication & Réseaux",
+        desc: "Outils et plateformes pour collaborer, échanger et présenter ses projets.",
+        skills: [
+          { name: "Discord", percent: 95 },
+          { name: "Skype", percent: 80 },
+          { name: "Telegram", percent: 70 },
+          { name: "Facebook", percent: 80 },
+          { name: "Instagram", percent: 85 },
+          { name: "LinkedIn", percent: 80 },
+          { name: "Présentations orales", percent: 80 }
+        ]
+      },
+      {
+        title: "Impression & Prépresse",
+        desc: "Compétences acquises en stage et Bac Pro RPIP : préparation, gestion et impression de fichiers.",
+        skills: [
+          { name: "Sérigraphie", percent: 85 },
+          { name: "Chimie des encres", percent: 75 },
+          { name: "Impression grand format", percent: 80 },
+          { name: "Création fichiers impression", percent: 85 },
+          { name: "Pré-presse", percent: 80 },
+          { name: "PAO", percent: 90 },
+          { name: "Gestion colorimétrie", percent: 75 },
+          { name: "Conduite machine", percent: 80 },
+          { name: "Maintenance machine", percent: 70 },
+          { name: "Contrôle qualité", percent: 80 }
+        ]
+      },
+      {
+        title: "Testeur Jeux Vidéo",
+        desc: "Compétences acquises en formation testeur jeux vidéo.",
+        skills: [
+          { name: "Tests QA", percent: 80 },
+          { name: "Rapports de bug", percent: 85 },
+          { name: "Analyse gameplay", percent: 80 },
+          { name: "Communication équipe", percent: 85 },
+          { name: "Esprit critique", percent: 80 }
+        ]
+      },
+      {
+        title: "Maintenance & Informatique",
+        desc: "Réparation, conseil, installation et optimisation de matériel informatique et consoles.",
+        skills: [
+          { name: "Réparation PC", percent: 90 },
+          { name: "Réparation consoles", percent: 80 },
+          { name: "Conseil client", percent: 85 },
+          { name: "Installation", percent: 85 },
+          { name: "Optimisation", percent: 80 },
+          { name: "Formation utilisateurs", percent: 80 }
+        ]
+      }
+    ];
+
+    function openModal(i) {
+      const cat = categories[i];
+      let circles = '';
+      cat.skills.forEach(skill => {
+        circles += `
+        <div class="circle-skill">
+          <div class="circle-wrap">
+            <svg width="110" height="110">
+              <circle class="circle-bg" cx="55" cy="55" r="43"/>
+              <circle class="circle-prog" cx="55" cy="55" r="43" style="stroke-dasharray:270;stroke-dashoffset:270"/>
+            </svg>
+            <span class="circle-text">${skill.percent}%</span>
+          </div>
+          <div class="skill-label">${skill.name}</div>
+        </div>
+        `;
+      });
+      const modal = document.createElement('div');
+      modal.className = "modal-bg";
+      modal.innerHTML = `
+        <div class="modal-content">
+          <button class="close-btn" title="Fermer">&times;</button>
+          <div class="modal-title">${cat.title}</div>
+          <div class="modal-desc">${cat.desc}</div>
+          <div class="modal-circles">${circles}</div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      setTimeout(() => {
+        modal.querySelectorAll('.circle-skill').forEach((el, idx) => {
+          const skill = cat.skills[idx];
+          const circle = el.querySelector('.circle-prog');
+          let offset = 270 - (270 * skill.percent / 100);
+          setTimeout(() => {
+            circle.style.strokeDashoffset = offset;
+          }, 350 + idx * 80);
+        });
+      }, 100);
+
+      modal.querySelector('.close-btn').onclick = () => document.body.removeChild(modal);
+      modal.onclick = e => { if (e.target === modal) document.body.removeChild(modal); };
+      document.addEventListener('keydown', function esc(e) {
+        if (e.key === "Escape") {
+          if (document.body.contains(modal)) document.body.removeChild(modal);
+          document.removeEventListener('keydown', esc);
+        }
+      });
+    }
+  </script>
+</body>
+</html>

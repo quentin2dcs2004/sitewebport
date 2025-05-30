@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Contact | Portfolio Galaxy Cyberpunk</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Font Awesome pour les icônes réseaux -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --main-gradient: linear-gradient(120deg, #ff9100 0%, #ff3c80 100%);
+      --bg-gradient: linear-gradient(120deg, #0a0320 0%, #1a144f 100%);
+      --btn-gradient: linear-gradient(90deg, #ff9100, #ff3c80);
+    }
+    body {
+      margin: 0;
+      font-family: 'Orbitron', Arial, sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      background: #0a0320;
+      position: relative;
+      overflow-x: hidden;
+    }
+    #galaxy-bg {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+    }
+    #contact-form {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+      margin: 60px auto 30px auto;
+      padding: 40px 30px 30px 30px;
+      background: rgba(10, 3, 32, 0.93);
+      border-radius: 22px;
+      box-shadow: 0 0 18px #ff9100, 0 0 32px #ff3c80, 0 0 8px #fff2;
+      border: 2px solid #ff9100;
+      backdrop-filter: blur(2px);
+      animation: fadeInUp 1s;
+    }
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(40px);}
+      100% { opacity: 1; transform: translateY(0);}
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.2rem;
+      letter-spacing: 2px;
+      margin-bottom: 30px;
+      color: #fff;
+      background: var(--main-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 12px #ff9100, 0 0 18px #ff3c80;
+    }
+    .contact-info {
+      margin-bottom: 30px;
+      padding: 20px;
+      border-radius: 12px;
+      background: rgba(26, 20, 79, 0.70);
+      box-shadow: 0 0 14px #ff9100a0, 0 0 8px #ff3c80a0 inset;
+      font-size: 1.08rem;
+      animation: fadeIn 1.2s;
+    }
+    .contact-info p {
+      margin: 10px 0;
+      color: #fff;
+      text-shadow: 0 0 5px #ff9100;
+    }
+    .contact-info strong {
+      color: #ff9100;
+      text-shadow: 0 0 8px #ff3c80;
+    }
+    .contact-info a {
+      color: #ff3c80;
+      text-shadow: 0 0 6px #ff9100;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .contact-info a:hover {
+      color: #fff;
+      text-shadow: 0 0 18px #ff3c80;
+    }
+    form label {
+      display: block;
+      margin-bottom: 7px;
+      margin-top: 18px;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 0 8px #ff9100;
+    }
+    form input, form textarea, form select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border: none;
+      border-radius: 9px;
+      background: rgba(44, 62, 80, 0.95);
+      color: #fff;
+      font-size: 1.1rem;
+      box-shadow: 0 0 9px #ff9100a0 inset, 0 0 6px #ff3c8080;
+      transition: box-shadow 0.2s;
+    }
+    form input:focus, form textarea:focus, form select:focus {
+      outline: none;
+      box-shadow: 0 0 14px #ff9100, 0 0 10px #ff3c80 inset;
+    }
+    .checkbox-consent {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      font-size: 0.98rem;
+      color: #ff9100;
+      text-shadow: 0 0 6px #ff3c80;
+    }
+    .checkbox-consent input[type="checkbox"] {
+      margin-right: 8px;
+      accent-color: #ff9100;
+    }
+    button[type="submit"] {
+      display: block;
+      width: 100%;
+      padding: 15px 0;
+      margin-top: 18px;
+      background: var(--btn-gradient);
+      color: #fff;
+      font-size: 1.2rem;
+      font-family: 'Orbitron', Arial, sans-serif;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 0 20px #ff9100, 0 0 10px #ff3c80 inset;
+      cursor: pointer;
+      transition: background-position 0.4s, transform 0.2s, box-shadow 0.2s;
+      text-shadow: 0 0 8px #ff3c80;
+    }
+    button[type="submit"]:hover {
+      background: linear-gradient(90deg, #ff3c80, #ff9100);
+      transform: scale(1.05);
+      box-shadow: 0 0 36px #ff3c80, 0 0 20px #ff9100 inset;
+    }
+    @media (max-width: 800px) {
+      #contact-form { padding: 25px 5vw; }
+    }
+    @media (max-width: 500px) {
+      h1 { font-size: 1.1rem; }
+      #contact-form { padding: 10px 2vw; }
+      .contact-info { padding: 10px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- FOND GALAXY ANIMÉ -->
+  <canvas id="galaxy-bg"></canvas>
+
+  <section id="contact-form">
+    <h1>Contactez-moi</h1>
+    <div class="contact-info">
+      <p><strong>Adresse :</strong> 14 traverse du progrès, 13014 Marseille</p>
+      <p><strong>Téléphone :</strong> +33 7 86 73 77 92</p>
+      <p><strong>Email :</strong> <a href="quentindacostaso@gmail.com">quentindacostaso@gmail.com</a></p>
+      <p>
+        <strong>Réseaux :</strong>
+        <a href="#" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a> |
+        <a href="#" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+      </p>
+    </div>
+    <form name="contact" method="POST" autocomplete="on">
+    <input type="hidden" name="form-name" value="contact">
+      <label for="prenom">Prénom *</label>
+      <input type="text" id="prenom" name="prenom" required>
+      <label for="nom">Nom *</label>
+      <input type="text" id="nom" name="nom" required>
+      <label for="email">Email *</label>
+      <input type="email" id="email" name="email" required>
+      <label for="telephone">Téléphone</label>
+      <input type="tel" id="telephone" name="telephone" pattern="[0-9+ ]{10,15}" placeholder="+33 6 12 34 56 78">
+      <label for="objet">Objet *</label>
+      <select id="objet" name="objet" required>
+        <option value="">-- Sélectionnez --</option>
+        <option value="demande-info">Demande d'information</option>
+        <option value="projet">Proposition de projet</option>
+        <option value="collaboration">Collaboration</option>
+        <option value="autre">Autre</option>
+      </select>
+      <label for="message">Message *</label>
+      <textarea id="message" name="message" required></textarea>
+      <div class="checkbox-consent">
+        <input type="checkbox" id="consent" name="consent" required>
+        <label for="consent" style="margin:0;">J’accepte que mes données soient utilisées pour me recontacter (RGPD).</label>
+      </div>
+      <button type="submit">Envoyer le message</button>
+    </form>
+  </section>
+
+  <!-- SCRIPT POUR LE FOND GALAXIE -->
+  <script>
+    // Exemple simple d'étoiles animées pour le fond galaxie
+    const canvas = document.getElementById('galaxy-bg');
+    const ctx = canvas.getContext('2d');
+    let w, h, stars = [];
+
+    function resize() {
+      w = window.innerWidth;
+      h = window.innerHeight;
+      canvas.width = w;
+      canvas.height = h;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    function Star() {
+      this.x = Math.random() * w;
+      this.y = Math.random() * h;
+      this.radius = Math.random() * 1.2 + 0.2;
+      this.alpha = Math.random() * 0.7 + 0.3;
+      this.speed = Math.random() * 0.2 + 0.05;
+    }
+    Star.prototype.draw = function() {
+      ctx.save();
+      ctx.globalAlpha = this.alpha;
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
+      ctx.fillStyle = "#fff";
+      ctx.shadowColor = "#ff3c80";
+      ctx.shadowBlur = 8;
+      ctx.fill();
+      ctx.restore();
+    }
+    Star.prototype.update = function() {
+      this.y += this.speed;
+      if (this.y > h) {
+        this.x = Math.random() * w;
+        this.y = 0;
+      }
+    }
+
+    function createStars() {
+      stars = [];
+      for (let i = 0; i < 160; i++) {
+        stars.push(new Star());
+      }
+    }
+    createStars();
+
+    function animate() {
+      ctx.clearRect(0, 0, w, h);
+      for (let star of stars) {
+        star.update();
+        star.draw();
+      }
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Compétences Flip Cards</title>
+  <style>
+    body {
+      background: radial-gradient(circle at 30% 40%, #2e1756 0%, #0c0521 100%);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      margin: 0; padding: 0;
+      min-height: 100vh;
+      color: #fff;
+      overflow-x: hidden;
+    }
+    .cards-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2.5rem;
+      justify-content: center;
+      margin: 3rem 0 0 0;
+    }
+    .flip-card {
+      background: transparent;
+      width: 340px;
+      height: 460px;
+      perspective: 1200px;
+      cursor: pointer;
+      margin: 1rem 0;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.8s cubic-bezier(.4,2.08,.55,.44);
+      transform-style: preserve-3d;
+    }
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg) scale(1.08);
+      z-index: 2;
+    }
+    .flip-card-front, .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 24px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 0 3px #4e5fff, 0 0 32px #4e5fff88, 0 0 120px #4e5fff22;
+      border: 2.5px solid #4e5fff;
+    }
+    .flip-card-front {
+      background: linear-gradient(135deg, #211b47 60%, #3e1c5e 100%);
+      z-index: 2;
+    }
+    .flip-card-back {
+      background: #1c1333;
+      color: #fff;
+      transform: rotateY(180deg);
+      box-shadow: 0 0 32px #4e5fff88;
+      z-index: 3;
+      justify-content: flex-start;
+      padding-top: 2.5rem;
+    }
+    .crystal-img {
+      width: 140px;
+      margin: 2.2rem auto 1.5rem auto;
+      filter: drop-shadow(0 0 24px #fff8);
+      user-select: none;
+      pointer-events: none;
+      display: block;
+    }
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #b0b8ff;
+      text-align: center;
+      margin-bottom: 0.7rem;
+      letter-spacing: 1px;
+      text-shadow: 0 0 8px #4e5fff;
+    }
+    .card-desc {
+      color: #bdbdbd;
+      font-size: 1.05rem;
+      text-align: center;
+      margin-bottom: 1.2rem;
+      padding: 0 1.2rem;
+      min-height: 48px;
+    }
+    .card-footer {
+      color: #bdbdbd;
+      font-size: 0.97rem;
+      text-align: center;
+      margin-top: auto;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+      letter-spacing: 0.5px;
+    }
+    /* Skill Circle */
+    .skill-circle {
+      position: relative;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: conic-gradient(#4e5fff var(--percent, 85%), #2e1756 0 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 0 20px #4e5fff55;
+    }
+    .skill-circle .percent-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%);
+      font-size: 2.1rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 0 0 8px #4e5fff;
+    }
+    .skill-circle .skill-name {
+      position: absolute;
+      top: 65%;
+      left: 50%;
+      transform: translate(-50%, 0);
+      font-size: 1.1rem;
+      color: #b0b8ff;
+      letter-spacing: 1px;
+    }
+    @media (max-width: 1100px) {
+      .cards-row { gap: 1.5rem; }
+      .flip-card { width: 270px; height: 370px; }
+      .crystal-img { width: 100px; margin-top: 1.5rem;}
+      .skill-circle { width: 100px; height: 100px; }
+    }
+    @media (max-width: 700px) {
+      .cards-row { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="cards-row">
+    <!-- Carte 1 -->
+    <div class="flip-card">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img class="crystal-img" src="https://i.imgur.com/vB7qQ6P.png" alt="HTML">
+          <div class="card-title">HTML</div>
+        </div>
+        <div class="flip-card-back">
+          <div class="skill-circle" data-percent="90">
+            <span class="percent-text">90%</span>
+            <span class="skill-name">HTML</span>
+          </div>
+          <div class="card-desc">
+            Maîtrise avancée du HTML pour structurer des pages web modernes.
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Carte 2 -->
+    <div class="flip-card">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img class="crystal-img" src="https://i.imgur.com/QnAULqQ.png" alt="CSS">
+          <div class="card-title">CSS</div>
+        </div>
+        <div class="flip-card-back">
+          <div class="skill-circle" data-percent="85">
+            <span class="percent-text">85%</span>
+            <span class="skill-name">CSS</span>
+          </div>
+          <div class="card-desc">
+            Animation, design responsive et effets avancés en CSS.
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Carte 3 -->
+    <div class="flip-card">
+      <div class="flip-card-inner">
+        <div class="flip-card-front">
+          <img class="crystal-img" src="https://i.imgur.com/vB7qQ6P.png" alt="JavaScript">
+          <div class="card-title">JavaScript</div>
+        </div>
+        <div class="flip-card-back">
+          <div class="skill-circle" data-percent="80">
+            <span class="percent-text">80%</span>
+            <span class="skill-name">JS</span>
+          </div>
+          <div class="card-desc">
+            Dynamisme, interactivité et manipulation du DOM avec JavaScript.
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Ajoute d'autres cartes ici -->
+  </div>
+  <script>
+    // Flip au clic
+    document.querySelectorAll('.flip-card').forEach(card => {
+      card.addEventListener('click', () => {
+        card.classList.toggle('flipped');
+      });
+    });
+    // Affichage dynamique du cercle de compétence
+    document.querySelectorAll('.skill-circle').forEach(circle => {
+      const percent = circle.getAttribute('data-percent') || 0;
+      circle.style.setProperty('--percent', percent + '%');
+      circle.querySelector('.percent-text').textContent = percent + '%';
+    });
+  </script>
+</body>
+</html>

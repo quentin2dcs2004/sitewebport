@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Story - Quentin</title>
+  <style>
+    :root {
+      --bg: #fafafa;
+      --header-bg: #fff;
+      --header-border: #e0e0e0;
+      --bubble-user: linear-gradient(135deg, #fd5949 0%, #d6249f 50%, #285AEB 100%);
+      --bubble-bot: #fff;
+      --bubble-bot-border: #e0e0e0;
+      --bubble-user-color: #fff;
+      --bubble-bot-color: #262626;
+      --btn-bg: #fafafa;
+      --btn-color: #d6249f;
+      --btn-border: #fd5949;
+      --btn-bg-hover: #fd5949;
+      --btn-color-hover: #fff;
+      --btn-border-hover: #d6249f;
+      --otherq-color: #888;
+      --main-shadow: 0 2px 6px #0001;
+      --yes-bg: #285AEB;
+      --no-bg: #fd5949;
+      --footer-btn-bg: linear-gradient(135deg, #fd5949 0%, #d6249f 50%, #285AEB 100%);
+    }
+    body {
+      background: var(--bg);
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background 0.4s;
+    }
+    .insta-header {
+      background: var(--header-bg);
+      border-bottom: 1px solid var(--header-border);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.7rem 1rem;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      justify-content: space-between;
+    }
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid #d6249f;
+      object-fit: cover;
+      background: linear-gradient(45deg, #fd5949, #d6249f, #285AEB);
+      padding: 2px;
+    }
+    .pseudo {
+      font-weight: bold;
+      color: #262626;
+      font-size: 1.15rem;
+    }
+    .online-dot {
+      width: 9px;
+      height: 9px;
+      background: #44e35e;
+      border-radius: 50%;
+      margin-left: 0.3rem;
+      display: inline-block;
+      border: 1.5px solid #fff;
+      vertical-align: middle;
+    }
+    .dark-toggle-btn {
+      background: none;
+      border: none;
+      font-size: 1.7rem;
+      cursor: pointer;
+      color: #d6249f;
+      margin-left: 1.5rem;
+      transition: color 0.2s;
+      outline: none;
+    }
+    .dark-toggle-btn:hover {
+      color: #285AEB;
+    }
+    main {
+      flex: 1;
+      max-width: 430px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      min-height: 0;
+    }
+    .chat-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      padding: 1.2rem 0.5rem 0.5rem 0.5rem;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      background: var(--bg);
+      min-height: 200px;
+      transition: background 0.4s;
+    }
+    .bubble {
+      max-width: 78%;
+      padding: 0.9rem 1.2rem;
+      border-radius: 1.3rem;
+      font-size: 1.07rem;
+      line-height: 1.5;
+      word-break: break-word;
+      white-space: pre-wrap;
+      overflow-wrap: break-word;
+      position: relative;
+      margin-bottom: 0.15rem;
+      animation: popin 0.4s;
+      box-shadow: var(--main-shadow);
+      transition: background 0.4s, color 0.4s, border 0.4s;
+    }
+    .bubble.user {
+      align-self: flex-end;
+      background: var(--bubble-user);
+      color: var(--bubble-user-color);
+      border-bottom-right-radius: 0.3rem;
+      border-bottom-left-radius: 1.3rem;
+      border-top-right-radius: 1.3rem;
+      border-top-left-radius: 1.3rem;
+      text-align: right;
+    }
+    .bubble.bot {
+      align-self: flex-start;
+      background: var(--bubble-bot);
+      color: var(--bubble-bot-color);
+      border-bottom-left-radius: 0.3rem;
+      border-bottom-right-radius: 1.3rem;
+      border-top-right-radius: 1.3rem;
+      border-top-left-radius: 1.3rem;
+      text-align: left;
+      border: 1px solid var(--bubble-bot-border);
+    }
+    @keyframes popin {
+      from { opacity: 0; transform: scale(0.95);}
+      to   { opacity: 1; transform: scale(1);}
+    }
+    .questions-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      justify-content: center;
+      padding: 0.7rem 0.2rem 0.7rem 0.2rem;
+      background: var(--header-bg);
+      border-top: 1px solid var(--header-border);
+      position: sticky;
+      bottom: 0;
+      z-index: 5;
+      min-height: 60px;
+      transition: min-height 0.2s, background 0.4s;
+    }
+    .question-btn {
+      background: var(--btn-bg);
+      color: var(--btn-color);
+      border: 2px solid var(--btn-border);
+      border-radius: 1.1rem;
+      padding: 0.5rem 1.1rem;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.2s, color 0.2s, border 0.2s;
+    }
+    .question-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .question-btn:hover:enabled {
+      background: var(--btn-bg-hover);
+      color: var(--btn-color-hover);
+      border: 2px solid var(--btn-border-hover);
+    }
+    .other-questions {
+      width: 100%;
+      text-align: center;
+      margin-top: 0.7rem;
+      margin-bottom: 0.3rem;
+      color: var(--otherq-color);
+      font-size: 1.08rem;
+      font-style: italic;
+      letter-spacing: 0.1px;
+    }
+    .yesno-bar {
+      display: flex;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-top: 0.7rem;
+    }
+    .yesno-btn {
+      background: var(--yes-bg);
+      color: #fff;
+      border: none;
+      border-radius: 0.7rem;
+      padding: 0.7rem 1.7rem;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0002;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 1px;
+    }
+    .yesno-btn.no {
+      background: var(--no-bg);
+    }
+    .yesno-btn:hover {
+      filter: brightness(1.1);
+      transform: scale(1.07);
+    }
+    .footer-btn {
+      display: flex;
+      justify-content: center;
+      margin: 1.7rem 0 1.1rem 0;
+    }
+    .home-btn {
+      background: var(--footer-btn-bg);
+      color: #fff;
+      border: none;
+      border-radius: 0.7rem;
+      padding: 1rem 2.2rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0002;
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: 1px;
+    }
+    .home-btn:hover {
+      filter: brightness(1.1);
+      transform: scale(1.07);
+    }
+    /* DARK MODE */
+    body.dark {
+      --bg: #18171c;
+      --header-bg: #23222a;
+      --header-border: #2c2b34;
+      --bubble-user: linear-gradient(135deg, #fd5949 0%, #d6249f 50%, #285AEB 100%);
+      --bubble-bot: #23222a;
+      --bubble-bot-border: #2c2b34;
+      --bubble-user-color: #fff;
+      --bubble-bot-color: #fff;
+      --btn-bg: #23222a;
+      --btn-color: #fd5949;
+      --btn-border: #d6249f;
+      --btn-bg-hover: #d6249f;
+      --btn-color-hover: #fff;
+      --btn-border-hover: #fd5949;
+      --otherq-color: #bdbdbd;
+      --main-shadow: 0 2px 8px #0007;
+      --yes-bg: #285AEB;
+      --no-bg: #fd5949;
+      --footer-btn-bg: linear-gradient(135deg, #fd5949 0%, #d6249f 50%, #285AEB 100%);
+    }
+    body.dark .pseudo { color: #fff; }
+    @media (max-width: 600px) {
+      main { padding: 0; }
+      .chat-area { min-height: 120px; }
+      .questions-bar { flex-direction: column; gap: 0.5rem;}
+      .footer-btn { margin: 1.2rem 0 0.7rem 0;}
+    }
+  </style>
+</head>
+<body>
+  <div class="insta-header">
+    <div class="header-left">
+      <img class="avatar" src="https://randomuser.me/api/portraicts/men/32.jpg" alt="Avatar Quentin" />
+      <span class="pseudo">Quentin DA COSTA SOARES</span>
+      <span class="online-dot"></span>
+    </div>
+    <button class="dark-toggle-btn" id="dark-toggle" title="Mode sombre / clair">🌙</button>
+  </div>
+  <main>
+    <div class="chat-area" id="chat-area">
+      <div class="bubble bot">Salut 👋 ! Pose-moi une question pour en savoir plus sur moi.</div>
+    </div>
+    <div class="questions-bar" id="questions-bar"></div>
+  </main>
+  <div class="footer-btn" id="footer-btn" style="display:none;">
+    <a href="index.html"><button class="home-btn">Retour à l'accueil</button></a>
+  </div>
+  <script>
+    const questions = [
+      "Quel est ton parcours ?",
+      "Quelles sont tes passions ?",
+      "Pourquoi le digital ?",
+      "Ton projet le plus marquant ?",
+      "Un rêve pour l'avenir ?",
+      "Où te vois-tu dans 5 ou 10 ans ?",
+      "Quels sont tes réseaux sociaux ?",
+      "Quels sont tes points forts ?",
+      "Quels sont tes points à améliorer ?",
+      "Qu’est-ce qui te motive au quotidien ?"
+    ];
+    const answers = [
+      `Après mon Bac Pro RPIP, j’ai intégré une école de prépa apprentissage pour mieux préparer mon orientation. Ensuite, j’ai suivi un Tramplin numérique, qui m’a permis de renforcer mes compétences en informatique et en design. J’ai ensuite enchaîné avec une formation de testeur de jeux vidéo, et aujourd’hui, je suis à la recherche d’une entreprise pour une alternance en graphisme.`,
+      `Je suis passionné de dessin numérique et papier, ainsi que de photographie, car ce sont des moyens d’exprimer ma créativité.
+Je suis un grand amateur de jeux vidéo et de jeux de société, pour leur côté stratégique, immersif et convivial.
+
+La modélisation 3D est une autre grande passion : j’aime concevoir des objets, des personnages et des décors. Je pratique aussi le cosplay, qui me permet de combiner création, design et mise en scène.
+Enfin, je m’intéresse beaucoup à l’univers des voitures, motos et armes (airsoft, reproduction, design), pour leur esthétique et leur technicité.`,
+      `Parce que c’est un domaine qui mêle créativité, technologie et innovation. Le digital permet de donner vie à des idées, de communiquer de manière moderne et impactante, et surtout, de toucher un large public.`,
+      `Mon projet le plus marquant a été la création de mon site personnel, où j’ai regroupé mes réalisations en graphisme, mes projets 3D et mes passions. C’était la première fois que je mettais en avant tout mon univers créatif.`,
+      `J’aimerais créer mon propre studio de création 3D. L’idée serait de proposer des objets ou des services dans des domaines variés comme le cosplay, l’architecture, le jeu vidéo ou le design d’intérieur, tout en respectant l’environnement grâce à des matériaux durables.`,
+      `Dans 5 ou 10 ans, je me vois lancer ma propre auto-entreprise dans la modélisation 3D, tout en continuant à évoluer dans le domaine du graphisme.
+J’aimerais aussi poursuivre des alternances ou des projets professionnels pour continuer à développer mes compétences et gagner en expérience.
+Et surtout, réaliser certains projets personnels que je présente dans ma page "Projet", des idées qui me tiennent à cœur et qui reflètent ma vision créative.`,
+      `Tu peux me retrouver ici :
+
+📸 Instagram (pro) : @quentindacostaso
+
+🎨 Instagram (art) : @lunart2dcs
+
+🛠️ Instagram (auto-entreprise 3D) : @luminartlight3d
+
+🎥 TikTok (auto-entreprise 3D) : @luminartlight3d
+
+💼 LinkedIn : Quentin Da Costa Soares
+
+💬 Discord : quentin2dcs2004
+
+💻 GitHub : Quentin2dcs2004`,
+      `Je suis quelqu’un de créatif, avec une grande curiosité et une bonne capacité d’adaptation.
+J’apprends très rapidement, je suis à l’écoute, et j’aime travailler en équipe tout en apportant des idées nouvelles.`,
+      `Je considère que je n’ai pas de "point faible", mais plutôt des axes d’amélioration :
+
+J’ai tendance à parler trop vite, ce qui peut nuire à la clarté de mon discours.
+
+Je bouge beaucoup et je marronne parfois (je parle en mâchant mes mots).
+
+Je peux m’énerver un peu vite, mais je travaille dessus pour mieux gérer mes émotions et garder mon calme.`,
+      `Ce qui me motive, c’est de voir que ce que je crée peut aider ou inspirer les autres.
+Quand mon travail sert à quelque chose, qu’il donne le sourire, simplifie une tâche, ou émerveille visuellement, c’est là que je me sens utile et à ma place.`
+    ];
+
+    let remainingQuestions = questions.map((q, i) => ({q, i}));
+    const chatArea = document.getElementById('chat-area');
+    const questionsBar = document.getElementById('questions-bar');
+    const footerBtn = document.getElementById('footer-btn');
+
+    function renderQuestionsBar() {
+      questionsBar.innerHTML = "";
+      if (remainingQuestions.length === 0) {
+        questionsBar.style.minHeight = "0";
+        showFooterBtn();
+        return;
+      }
+      remainingQuestions.forEach(obj => {
+        const btn = document.createElement('button');
+        btn.className = 'question-btn';
+        btn.innerHTML = obj.q;
+        btn.onclick = () => ask(obj.i);
+        questionsBar.appendChild(btn);
+      });
+    }
+
+    function addMessage(text, who) {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble ' + who;
+      bubble.textContent = text;
+      chatArea.appendChild(bubble);
+      chatArea.scrollTop = chatArea.scrollHeight;
+    }
+
+    async function typeAnswer(text, callback) {
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble bot';
+      chatArea.appendChild(bubble);
+      chatArea.scrollTop = chatArea.scrollHeight;
+      bubble.textContent = '';
+      for (let i = 0; i < text.length; i++) {
+        bubble.textContent += text.charAt(i);
+        chatArea.scrollTop = chatArea.scrollHeight;
+        await new Promise(r => setTimeout(r, 18));
+      }
+      if (callback) callback();
+    }
+
+    function ask(idx) {
+      const qIdx = remainingQuestions.findIndex(obj => obj.i === idx);
+      if (qIdx === -1) return;
+      addMessage(questions[idx], 'user');
+      remainingQuestions.splice(qIdx, 1);
+      renderQuestionsBar();
+      questionsBar.innerHTML = "";
+      setTimeout(() => {
+        typeAnswer(answers[idx], afterAnswer);
+      }, 400);
+    }
+
+    function afterAnswer() {
+      setTimeout(() => {
+        scrollQuestionsBar();
+        if (remainingQuestions.length === 0) {
+          showFooterBtn();
+        } else {
+          showOtherQuestions();
+        }
+      }, 400);
+    }
+
+    function scrollQuestionsBar() {
+      questionsBar.scrollIntoView({behavior: "smooth", block: "end"});
+    }
+
+    function showOtherQuestions() {
+      questionsBar.innerHTML = `
+        <div class="other-questions">Veux-tu poser une autre question&nbsp;?</div>
+        <div class="yesno-bar">
+          <button class="yesno-btn" onclick="showMoreQuestions()">Oui</button>
+          <button class="yesno-btn no" onclick="showFooterBtn()">Non</button>
+        </div>
+      `;
+      scrollQuestionsBar();
+    }
+
+    function showMoreQuestions() {
+      renderQuestionsBar();
+      scrollQuestionsBar();
+    }
+
+    function showFooterBtn() {
+      questionsBar.innerHTML = "";
+      footerBtn.style.display = "flex";
+    }
+
+    function askRandom() {
+      if (remainingQuestions.length === 0) return;
+      const idx = Math.floor(Math.random() * remainingQuestions.length);
+      ask(remainingQuestions[idx].i);
+    }
+
+    renderQuestionsBar();
+    footerBtn.style.display = "none";
+    window.askRandom = askRandom;
+    window.showMoreQuestions = showMoreQuestions;
+    window.showFooterBtn = showFooterBtn;
+
+    // DARK MODE
+    const darkToggle = document.getElementById('dark-toggle');
+    darkToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      darkToggle.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+    });
+  </script>
+</body>
+</html>
